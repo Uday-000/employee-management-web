@@ -1,0 +1,29 @@
+.uploadComponent {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+  
+  .uploadComponent h3 {
+    margin-bottom: 10px;
+  }
+  
+  .uploadComponent input {
+    margin-bottom: 10px;
+  }
+  
+  .uploadComponent button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .uploadComponent button:hover {
+    background-color: #0056b3;
+  }

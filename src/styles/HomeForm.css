@@ -1,0 +1,119 @@
+.container {
+  margin-top: 20px;
+}
+
+.text {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.btn-outline {
+  border: 2px solid;
+  margin-right: 5px;
+}
+
+.label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Optional: Add styles for the table for better readability */
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Optional: Style table header */
+thead th {
+  background-color: #f2f2f2;
+}
+
+/* Optional: Style table rows on hover */
+tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Optional: Style delete and update buttons */
+.btn-danger,
+.btn-warning {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.department-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.department-button {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.department-button:hover {
+  background-color: #2980b9;
+}
+
+.mainBody {
+  padding: 40px;
+  background-image: url("./../Img/bg\ 1.jpg");
+  background-size: cover;
+}
+
+.buttonStyle {
+  background-color: #bdd1ec, color #1486ec;
+}
+#upbutton{
+  border: none;
+  background-color: transparent;
+  height: 10%;
+  font-size: xx-small;
+}
+#adduserbutton{
+  
+  /* margin-left: 95%; */
+  align-items: flex-end;
+  margin-left: 10px;
+}
+#adduserbutton1{
+
+  margin-left: 57%;
+ 
+}
+
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding-right: 30px; /* Adjust this value based on the button width */
+}
+
+.show-password-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 20px; /* Adjust this value for the desired distance from the right */
+  background: none;
+  border: none;
+  cursor: pointer;
+}
