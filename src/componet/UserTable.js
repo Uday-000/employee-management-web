@@ -1,6 +1,9 @@
 import React from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
+import IconButton from "@mui/material/IconButton";
+import MonochromePhotosIcon from "@mui/icons-material/MonochromePhotos";
+import axios from "axios";
 
 const UserTable = ({
   data,
@@ -12,8 +15,35 @@ const UserTable = ({
   setname,
   setpassword,
   setYourImageFile,
-  selectedDepartment
+  selectedDepartment,
 }) => {
+  const formData = new FormData();
+
+  const Image = (ItemId) => {
+    axios
+      .post(`http://localhost:8080/imageUpload/${ItemId}`, formData)
+      .then((response) => {
+        if (response.status === 200) {
+          alert("profile updated succesfully");
+        }
+      })
+      .catch((error) => {
+        console.log("msg", error.response);
+      });
+  };
+
+  const handleAddImage = (ItemId) => {
+    const fileInput = document.getElementById(`fileInput-${ItemId}`);
+    fileInput.click();
+    console.log(ItemId);
+  };
+
+  const uploadImage = (e, Item) => {
+    formData.append("file", e.target.files[0]);
+    console.log(formData);
+    Image(Item);
+  };
+
   return (
     <>
       <Table striped bordered>
@@ -99,13 +129,51 @@ const UserTable = ({
           {data.map((item) => (
             <tr key={item.userId}>
               <td>{item.userId}</td>
-              <td>
+              {/* <td>
                 {" "}
                 <img
                   style={{ width: "40px" }}
                   src={`data:image/jpeg;base64,${item.image}`}
                   alt=""
                 />{" "}
+              </td> */}
+              <td>
+                {item.image == null ? (
+                  <td>
+                    <IconButton
+                      variant="light"
+                      style={{ borderRadius: "50px" }}
+                      onClick={() => handleAddImage(item.userId)}
+                    >
+                      <MonochromePhotosIcon />
+                    </IconButton>
+                    <input
+                      type="file"
+                      style={{ display: "none" }}
+                      id={`fileInput-${item.userId}`}
+                      onChange={(e) => uploadImage(e, item.userId)}
+                    ></input>
+                  </td>
+                ) : (
+                  <td>
+                    <IconButton onClick={() => handleAddImage(item.userId)}>
+                      <td>
+                        {" "}
+                        <img
+                          style={{ width: "40px" }}
+                          src={`data:image/jpeg;base64,${item.image}`}
+                          alt=""
+                        />{" "}
+                      </td>
+                    </IconButton>
+                    <input
+                      type="file"
+                      style={{ display: "none" }}
+                      id={`fileInput-${item.userId}`}
+                      onChange={(e) => uploadImage(e, item.userId)}
+                    ></input>
+                  </td>
+                )}
               </td>
               <td>{item.userName}</td>
               <td>{item.email}</td>
