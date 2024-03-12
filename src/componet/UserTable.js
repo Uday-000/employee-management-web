@@ -3,7 +3,9 @@ import { Button, Col, Row } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import IconButton from "@mui/material/IconButton";
 import MonochromePhotosIcon from "@mui/icons-material/MonochromePhotos";
-import axios from "axios";
+// import axios from "axios";
+import { useDispatch } from "react-redux";
+import { ImageAction } from "../actions/ImageActions";
 
 const UserTable = ({
   data,
@@ -11,24 +13,24 @@ const UserTable = ({
   deleteUser,
   handleShow,
   setid,
-  setemail,
-  setname,
-  setpassword,
-  setYourImageFile,
   selectedDepartment,
+  setRefresh,
+  userDetails,
+  setUserDetails,
 }) => {
   const formData = new FormData();
 
+  const dispatch = useDispatch();
   const Image = (ItemId) => {
-    axios
-      .post(`http://localhost:8080/imageUpload/${ItemId}`, formData)
+    dispatch(ImageAction({ ItemId, formData }))
       .then((response) => {
-        if (response.status === 200) {
-          alert("profile updated succesfully");
+        if (response && response.status === 200) {
+          setRefresh(true);
+          alert("Profile updated successfully");
         }
       })
       .catch((error) => {
-        console.log("msg", error.response);
+        console.log("Error:", error);
       });
   };
 
@@ -129,14 +131,6 @@ const UserTable = ({
           {data.map((item) => (
             <tr key={item.userId}>
               <td>{item.userId}</td>
-              {/* <td>
-                {" "}
-                <img
-                  style={{ width: "40px" }}
-                  src={`data:image/jpeg;base64,${item.image}`}
-                  alt=""
-                />{" "}
-              </td> */}
               <td>
                 {item.image == null ? (
                   <td>
@@ -192,22 +186,9 @@ const UserTable = ({
                 <center>
                   <Button
                     className="btn btn-warning outline"
-                    onClick={() => {
-                      setid(item.userId);
-                      handleShow();
-                      setemail(item.email);
-                      setname(item.userName);
-                      setpassword(item.password);
-                      setYourImageFile(
-                        <img
-                          style={{ width: "40px" }}
-                          src={`data:image/jpeg;base64,${item.image}`}
-                          alt=""
-                        />
-                      );
-                    }}
+                    onClick={() => handleShow(item)}
                   >
-                    🔄 {/* Refresh Emoji */}
+                    ✏️ {/* Refresh Emoji */}
                   </Button>
                 </center>
               </td>

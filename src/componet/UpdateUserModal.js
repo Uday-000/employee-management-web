@@ -6,21 +6,13 @@ const UpdateUserModal = ({
   handleClose,
   updateUser,
   id,
-  email,
-  name,
-  password,
-  setemail,
-  setname,
-  setpassword,
   setYourImageFile,
+  userDetails,
+  setUserDetails,
+  handleChange,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-
-    setYourImageFile(file);
-  };
+  const { userName, password, email, address, phoneNumber } = userDetails;
 
   return (
     <Modal show={showUpdateModal} onHide={handleClose}>
@@ -32,8 +24,9 @@ const UpdateUserModal = ({
         <br />
         <input
           type="text"
+          name="email"
           value={email}
-          onChange={(e) => setemail(e.target.value)}
+          onChange={handleChange}
           placeholder="Enter email"
           className="input"
           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
@@ -42,27 +35,45 @@ const UpdateUserModal = ({
         <label className="label">Username :</label>
         <input
           type="text"
-          value={name}
-          onChange={(e) => setname(e.target.value)}
+          name="userName"
+          value={userName}
+          onChange={handleChange}
           className="input"
           placeholder="Enter Username"
         />
         <br />
 
-        <label className="label">Profile Picture :</label>
+        <label className="label">address :</label>
         <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => handleFileChange(e)}
+          type="text"
+          name="address"
+          onChange={handleChange}
+          value={address}
+          className="input"
+          placeholder="Enter address"
         />
+
+        <br />
+
+        <label className="label">phoneNumber :</label>
+        <input
+          type="number"
+          name="phoneNumber"
+          value={phoneNumber}
+          onChange={handleChange}
+          className="input"
+          placeholder="Enter phoneNumber"
+        />
+
         <br />
 
         <label className="label">Password :</label>
         <div className="password-container">
           <input
             type={showPassword ? "text" : "password"}
+            name="password"
             value={password}
-            onChange={(e) => setpassword(e.target.value)}
+            onChange={handleChange}
             placeholder="Enter password"
             className="input"
           />

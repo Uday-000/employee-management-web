@@ -5,6 +5,7 @@ import { HomeFrom } from "./pages/HomeForm";
 import LoginForm from "./pages/LoginForm";
 import UploadingFile from './pages/UploadingFile';
 import RegistrationForm from './componet/RegistrationForm';
+import UserHome from './pages/UserHome';
 // import ReduxForm from './pages/ReduxForm';
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           </Route>
           <Route path='/uploadFile' element={<UploadingFile/>} ></Route>
           <Route path='/Registration' element={<RegistrationForm/>} ></Route>
+          <Route path='/userHome' element={<UserHome/>}></Route>
         </Routes>
       </BrowserRouter>
       <ToastContainer />

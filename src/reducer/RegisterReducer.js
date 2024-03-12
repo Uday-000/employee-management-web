@@ -1,3 +1,4 @@
+import { REGISTER_FORM } from "../actions/registerActions";
 
 const initialState=[];
 

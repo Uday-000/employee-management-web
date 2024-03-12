@@ -2,124 +2,144 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import './../styles/LoginForm.css'
+import "./../styles/LoginForm.css";
 // import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { registerActions } from "../actions/registerActions";
+// import { useDispatch } from "react-redux";
+// import { registerActions } from "../actions/registerActions";
+import axios from "axios";
 
-function RegistrationForm (departmentNames) {
-  // const [username, setUsername] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [department, setDepartment] = useState("");
-  const [userdetails, setUserDetails] = useState({
-    username:"",
-    password:"",
-    email:"",
-    department:""
-  })
-  
-  const handleChange=(e)=>{
-    const {name,value}=e.target;
+function RegistrationForm({onRegistrationSuccess}) {
+  const [department, setDepartment] = useState(null);
+  const [userDetails, setUserDetails] = useState({
+    userName: "",
+    password: "",
+    email: "",
+    address: "",
+    phoneNumber: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
     setUserDetails({
-      ...userdetails,
-      [name]:value
+      ...userDetails,
+      [name]: value,
     });
-
-
-  }
+  };
 
   const nav = useNavigate();
-  const dispatch=useDispatch();
- 
+  // const dispatch=useDispatch();
+
   const handleRegistrationSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerActions(userdetails))
-  //   axios
-  //     .post(`http://localhost:8080/register?departmentName=${userdetails.department}`, {
-  //       userName: userdetails.username,
-  //       password: userdetails.password,
-  //       email: userdetails.email,
-  //     })
+    let url = `http://localhost:8080/registerUser/${department}`;
+    axios
+      .post(url, userDetails)
       .then((response) => {
         if (response.status === 200) {
-          console.log("Registration success");
-          alert("register success")
-          nav('/Home')
-          
+          alert("register success");
+         onRegistrationSuccess()
         }
       })
       .catch((error) => {
+        console.log(error)
         alert(error.response.data.message);
-      })
-
-    
+      });
   };
-  const handleCancelClick=()=>{
-    nav('/Home')
+  const handleCancelClick = () => {
+    nav("/Home");
+  };
 
-  }
-
- 
   return (
-    <div className="loginBody" >
+    <div className="loginBody">
       <Form onSubmit={handleRegistrationSubmit} className="login-box">
         <Form.Group>
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="text"
-            value={userdetails.username}
+            name="userName"
             placeholder="Enter Username"
             required
-            onChange={(e) => setUserDetails(e.target.value)}
+            onChange={handleChange}
           />
         </Form.Group>
         <Form.Group>
           <Form.Label>Password</Form.Label>
           <Form.Control
-           type="password"
-            value={userdetails.password}
+            type="password"
+            name="password"
             placeholder="Enter Password"
             required
             onChange={handleChange}
           />
-          
         </Form.Group>
         <Form.Group>
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
-            value={userdetails.email}
+            name="email"
             placeholder="Enter Email"
             required
             onChange={handleChange}
           />
         </Form.Group>
+
+        <Form.Group>
+          <Form.Label>Address</Form.Label>
+          <Form.Control
+            type="text"
+            name="address"
+            placeholder="Enter Address"
+            required
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label>phoneNumber</Form.Label>
+          <Form.Control
+            type="number"
+            name="phoneNumber"
+            placeholder="Enter phoneNumber"
+            required
+            onChange={handleChange}
+          />
+        </Form.Group>
+
         <Form.Group>
           <Form.Label>Department</Form.Label>
           <Form.Control
             as="select"
-            value={userdetails.department}
             required
-            onChange={handleChange}
+             onChange={(e)=>setDepartment(e.target.value)}
           >
-            <option value="" disabled>Select Department</option>
+            <option value="" disabled>
+              Select Department
+            </option>
             <option value="Marketing Department">Marketing Department</option>
             <option value="IT Department">IT Department</option>
             <option value="Sales Department">Sales Department</option>
             <option value="Finance Department">Finance Department</option>
             <option value="HR Department">HR Department</option>
-            
+
             {/* Add more options as needed */}
           </Form.Control>
         </Form.Group>
-        
-        <center className="mt-4 d-flex " style={{justifyContent:'space-evenly'}}  >
-          
-        <Button style={{width:'30%'}} className="btn-danger" onClick={handleCancelClick}>Cancel</Button>
-          <Button style={{width:'30%'}} type="submit">Register</Button>
 
+        <center
+          className="mt-4 d-flex "
+          style={{ justifyContent: "space-evenly" }}
+        >
+          <Button
+            style={{ width: "30%" }}
+            className="btn-danger"
+            onClick={handleCancelClick}
+          >
+            Cancel
+          </Button>
+          <Button style={{ width: "30%" }} type="submit">
+            Register
+          </Button>
         </center>
       </Form>
     </div>

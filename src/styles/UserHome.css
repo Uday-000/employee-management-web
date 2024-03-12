@@ -1,0 +1,10 @@
+.profilePic {
+    display: flex;
+    justify-content: flex-end; /* Change flex-end to flex-start */
+    padding: 10px;
+  }
+
+
+  .main{
+    padding: 60px;
+  }

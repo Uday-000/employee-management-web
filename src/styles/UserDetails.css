@@ -1,0 +1,24 @@
+
+.main-content {
+    padding: 10px;
+    background-image: url("./../Img/bg\ 1.jpg");
+    background-size: cover;
+    height: 70vh;
+  }
+
+  .contentBorder{
+    border: 1px solid;
+    background-color: #dfeffc;
+    color: #2e6e9e;
+    text-indent: 20px;
+    font-variant: small-caps;
+    letter-spacing: 0.03em;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .details{
+    /* text-align: center; */
+   margin-left: 200px;
+   padding-left: 200px;
+  }
