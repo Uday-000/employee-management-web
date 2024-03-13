@@ -1,10 +1,19 @@
-.profilePic {
-    display: flex;
-    justify-content: flex-end; /* Change flex-end to flex-start */
-    padding: 10px;
+
+  .main-content {
+    background-image: url("./../Img/bg\ 1.jpg");
+    background-size: cover;
+    height: 70vh;
+    padding: 0;
+    width: 90%;
+    margin-left: 100px;
+  
   }
 
+  .navBar{
+   
+    background-color: whitesmoke;
+    width:90%;
+    margin-left: 100px;
 
-  .main{
-    padding: 60px;
   }
+  

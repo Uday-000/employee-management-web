@@ -2,9 +2,8 @@ const initialState = {
   userDetails: null,
 };
 
-
 export const UserDetailsReducer = (state = initialState, action) => {
-    console.log("in reducer",action.payload)
+  console.log("in reducer", action.payload);
   switch (action.type) {
     case "SET_USER_DETAILS":
       return { ...state, userDetails: action.payload };
@@ -12,6 +11,5 @@ export const UserDetailsReducer = (state = initialState, action) => {
       return state;
   }
 };
-
 
 export default UserDetailsReducer;

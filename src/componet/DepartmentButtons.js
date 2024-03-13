@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 
 const DepartmentButtons = ({ departmentNames, handleDepartmentClick }) => {
+  const sortedDepartments = [...departmentNames].sort();
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const handleButtonClick = (departmentName) => {
     setSelectedDepartment(departmentName);
@@ -12,7 +13,7 @@ const DepartmentButtons = ({ departmentNames, handleDepartmentClick }) => {
       className="department-row"
       style={{ padding: "1%", backgroundColor: "#bdd1ec" }}
     >
-      {departmentNames.map((departmentName) => (
+      {sortedDepartments.map((departmentName) => (
         <Button
           className="buttonStyle"
           key={departmentName}

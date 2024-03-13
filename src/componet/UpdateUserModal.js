@@ -15,7 +15,7 @@ const UpdateUserModal = ({
   const { userName, password, email, address, phoneNumber } = userDetails;
 
   return (
-    <Modal show={showUpdateModal} onHide={handleClose}>
+    <Modal show={showUpdateModal} onHide={handleClose} >
       <Modal.Header closeButton>
         <Modal.Title>User Details</Modal.Title>
       </Modal.Header>

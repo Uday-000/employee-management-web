@@ -8,6 +8,7 @@ import UpdateUserModal from "../componet/UpdateUserModal";
 import DeleteConfirmationModal from "../componet/DeleteConfirmationModal";
 import DepartmentButtons from "../componet/DepartmentButtons";
 import UserTable from "../componet/UserTable";
+import { IoIosLogOut } from "react-icons/io";
 export const HomeFrom = () => {
   const [data, setData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -17,9 +18,7 @@ export const HomeFrom = () => {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [userToDeleteId, setUserToDeleteId] = useState(null);
   const [departmentNames, setDepartmentNames] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState(
-    "Marketing Department"
-  );
+  const [selectedDepartment, setSelectedDepartment] = useState("");
   // const [yourImageFile, setYourImageFile] = useState(null);
   const [searchInput, setSearchInput] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -49,7 +48,7 @@ export const HomeFrom = () => {
     });
     setid(user.userId);
     setShowUpdateModal(true);
-  }
+  };
 
   useEffect(() => {
     axios
@@ -58,9 +57,7 @@ export const HomeFrom = () => {
         setDepartmentNames(response.data);
 
         axios
-          .get(
-            `http://localhost:8080/findUsers?serachTerm=${searchTerm}&departmentName=${selectedDepartment}`
-          )
+          .get(`http://localhost:8080/findUsers?serachTerm=${searchTerm}`)
           .then((response) => {
             setData(response.data);
             setRefresh(true);
@@ -103,7 +100,7 @@ export const HomeFrom = () => {
   const updateUser = () => {
     let url = `http://localhost:8080/updateUesrDetails/${id}`;
     axios
-      .put(url,userDetails)
+      .put(url, userDetails)
       .then((res) => {
         if (res.status === 200) {
           alert("Updated successfully");
@@ -153,16 +150,38 @@ export const HomeFrom = () => {
       [name]: value,
     });
   };
+  const handleLogout = () => {
+    localStorage.clear();
+    nav("/");
+  };
 
   return (
     <div className="container">
+      <div>
+        <p
+          style={{
+            fontSize: "30px",
+            marginTop: "20px",
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "end",
+            marginLeft: "95%",
+          }}
+        >
+          <IoIosLogOut onClick={handleLogout} />
+        </p>
+      </div>
       <DepartmentButtons
         departmentNames={departmentNames}
         handleDepartmentClick={handleDepartmentClick}
       />
+      
 
+      
       <div className="mainBody">
         <div style={{ marginRight: "-38%" }}>
+          {selectedDepartment==="Administrative" && (
+          <div>
           <SearchBar
             setSearchTerm={setSearchTerm}
             searchInput={searchInput}
@@ -176,10 +195,12 @@ export const HomeFrom = () => {
             <Button type="button" onClick={handleAddClick} id="adduserbutton">
               Add User
             </Button>
+            </div>
           </div>
+           )}
         </div>
 
-        {selectedDepartment && (
+        {selectedDepartment === "Administrative" ? (
           <UserTable
             data={data}
             handleSortAscending={handleSortAscending}
@@ -191,6 +212,8 @@ export const HomeFrom = () => {
             userDetails={userDetails}
             setUserDetails={setUserDetails}
           />
+        ) : (
+          <div> fghbnj </div>
         )}
         <center></center>
       </div>
