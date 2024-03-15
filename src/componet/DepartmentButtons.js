@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 
 const DepartmentButtons = ({ departmentNames, handleDepartmentClick }) => {
+  const sortedDepartments = [...departmentNames].sort();
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const handleButtonClick = (departmentName) => {
+    setSelectedDepartment(departmentName);
+    handleDepartmentClick(departmentName);
+  };
   return (
-    <div className="department-row" style={{ padding: "1%", backgroundColor: "#bdd1ec" }}>
-      {departmentNames.map((departmentName) => (
+    <div
+      className="department-row"
+      style={{ padding: "1%", backgroundColor: "#bdd1ec" }}
+    >
+      {sortedDepartments.map((departmentName) => (
         <Button
-          variant="outline-secondary"
           className="buttonStyle"
           key={departmentName}
-          onClick={() => handleDepartmentClick(departmentName)}
+          onClick={() => handleButtonClick(departmentName)}
+          variant={
+            selectedDepartment === departmentName
+              ? "secondary"
+              : "outline-secondary"
+          }
           style={{ border: "none" }}
         >
           <h5> {departmentName}</h5>

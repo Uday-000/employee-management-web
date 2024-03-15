@@ -1,6 +1,11 @@
 import React from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
+import IconButton from "@mui/material/IconButton";
+import MonochromePhotosIcon from "@mui/icons-material/MonochromePhotos";
+// import axios from "axios";
+import { useDispatch } from "react-redux";
+import { ImageAction } from "../actions/ImageActions";
 
 const UserTable = ({
   data,
@@ -8,12 +13,39 @@ const UserTable = ({
   deleteUser,
   handleShow,
   setid,
-  setemail,
-  setname,
-  setpassword,
-  setYourImageFile,
-  selectedDepartment
+  selectedDepartment,
+  setRefresh,
+  userDetails,
+  setUserDetails,
 }) => {
+  const formData = new FormData();
+
+  const dispatch = useDispatch();
+  const Image = (ItemId) => {
+    dispatch(ImageAction({ ItemId, formData }))
+      .then((response) => {
+        if (response && response.status === 200) {
+          setRefresh(true);
+          alert("Profile updated successfully");
+        }
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+      });
+  };
+
+  const handleAddImage = (ItemId) => {
+    const fileInput = document.getElementById(`fileInput-${ItemId}`);
+    fileInput.click();
+    console.log(ItemId);
+  };
+
+  const uploadImage = (e, Item) => {
+    formData.append("file", e.target.files[0]);
+    console.log(formData);
+    Image(Item);
+  };
+
   return (
     <>
       <Table striped bordered>
@@ -100,12 +132,42 @@ const UserTable = ({
             <tr key={item.userId}>
               <td>{item.userId}</td>
               <td>
-                {" "}
-                <img
-                  style={{ width: "40px" }}
-                  src={`data:image/jpeg;base64,${item.image}`}
-                  alt=""
-                />{" "}
+                {item.image == null ? (
+                  <td>
+                    <IconButton
+                      variant="light"
+                      style={{ borderRadius: "50px" }}
+                      onClick={() => handleAddImage(item.userId)}
+                    >
+                      <MonochromePhotosIcon />
+                    </IconButton>
+                    <input
+                      type="file"
+                      style={{ display: "none" }}
+                      id={`fileInput-${item.userId}`}
+                      onChange={(e) => uploadImage(e, item.userId)}
+                    ></input>
+                  </td>
+                ) : (
+                  <td>
+                    <IconButton onClick={() => handleAddImage(item.userId)}>
+                      <td>
+                        {" "}
+                        <img
+                          style={{ width: "40px" }}
+                          src={`data:image/jpeg;base64,${item.image}`}
+                          alt=""
+                        />{" "}
+                      </td>
+                    </IconButton>
+                    <input
+                      type="file"
+                      style={{ display: "none" }}
+                      id={`fileInput-${item.userId}`}
+                      onChange={(e) => uploadImage(e, item.userId)}
+                    ></input>
+                  </td>
+                )}
               </td>
               <td>{item.userName}</td>
               <td>{item.email}</td>
@@ -124,22 +186,9 @@ const UserTable = ({
                 <center>
                   <Button
                     className="btn btn-warning outline"
-                    onClick={() => {
-                      setid(item.userId);
-                      handleShow();
-                      setemail(item.email);
-                      setname(item.userName);
-                      setpassword(item.password);
-                      setYourImageFile(
-                        <img
-                          style={{ width: "40px" }}
-                          src={`data:image/jpeg;base64,${item.image}`}
-                          alt=""
-                        />
-                      );
-                    }}
+                    onClick={() => handleShow(item)}
                   >
-                    🔄 {/* Refresh Emoji */}
+                    ✏️ {/* Refresh Emoji */}
                   </Button>
                 </center>
               </td>

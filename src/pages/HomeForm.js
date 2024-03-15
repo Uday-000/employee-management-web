@@ -8,11 +8,9 @@ import UpdateUserModal from "../componet/UpdateUserModal";
 import DeleteConfirmationModal from "../componet/DeleteConfirmationModal";
 import DepartmentButtons from "../componet/DepartmentButtons";
 import UserTable from "../componet/UserTable";
+import { IoIosLogOut } from "react-icons/io";
 export const HomeFrom = () => {
   const [data, setData] = useState([]);
-  const [name, setname] = useState(null);
-  const [password, setpassword] = useState(null);
-  const [email, setemail] = useState(null);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [id, setid] = useState("");
   const [refresh, setRefresh] = useState(false);
@@ -20,33 +18,46 @@ export const HomeFrom = () => {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [userToDeleteId, setUserToDeleteId] = useState(null);
   const [departmentNames, setDepartmentNames] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState(
-    "Marketing Department"
-  );
-  const [yourImageFile, setYourImageFile] = useState(null);
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  // const [yourImageFile, setYourImageFile] = useState(null);
   const [searchInput, setSearchInput] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [userDetails, setUserDetails] = useState({
+    userName: "",
+    password: "",
+    email: "",
+    address: "",
+    phoneNumber: "",
+  });
 
   const nav = useNavigate();
 
   const handleClose = () => {
     setShowUpdateModal(false);
     setShowDeleteConfirmation(false);
-    setShowPassword(false); // Reset password visibility when closing modal
+    setShowPassword(false);
   };
-  const handleShow = () => setShowUpdateModal(true);
+  const handleShow = (user) => {
+    setUserDetails({
+      userName: user.userName,
+      password: user.password,
+      email: user.email,
+      address: user.address,
+      phoneNumber: user.phoneNumber,
+    });
+    setid(user.userId);
+    setShowUpdateModal(true);
+  };
 
   useEffect(() => {
-    // Fetch department names
     axios
       .get("http://localhost:8080/departments")
       .then((response) => {
         setDepartmentNames(response.data);
 
         axios
-          .get(
-            `http://localhost:8080/findUsers?serachTerm=${searchTerm}&departmentName=${selectedDepartment}`
-          )
+          .get(`http://localhost:8080/findUsers?serachTerm=${searchTerm}`)
           .then((response) => {
             setData(response.data);
             setRefresh(true);
@@ -87,15 +98,9 @@ export const HomeFrom = () => {
   };
 
   const updateUser = () => {
-    let url = `http://localhost:8080/updateUser/${id}`;
-    const formData = new FormData();
-    formData.append("updatedUserName", name);
-    formData.append("updatedPassword", password);
-    formData.append("updatedEmail", email);
-    formData.append("file", yourImageFile);
-
+    let url = `http://localhost:8080/updateUesrDetails/${id}`;
     axios
-      .put(url, formData)
+      .put(url, userDetails)
       .then((res) => {
         if (res.status === 200) {
           alert("Updated successfully");
@@ -138,17 +143,45 @@ export const HomeFrom = () => {
     nav("/Registration");
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserDetails({
+      ...userDetails,
+      [name]: value,
+    });
+  };
+  const handleLogout = () => {
+    localStorage.clear();
+    nav("/");
+  };
+
   return (
     <div className="container">
-      <h3 className="text"> {selectedDepartment} Users</h3>
-
+      <div>
+        <p
+          style={{
+            fontSize: "30px",
+            marginTop: "20px",
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "end",
+            marginLeft: "95%",
+          }}
+        >
+          <IoIosLogOut onClick={handleLogout} />
+        </p>
+      </div>
       <DepartmentButtons
         departmentNames={departmentNames}
         handleDepartmentClick={handleDepartmentClick}
       />
+      
 
+      
       <div className="mainBody">
         <div style={{ marginRight: "-38%" }}>
+          {selectedDepartment==="Administrative" && (
+          <div>
           <SearchBar
             setSearchTerm={setSearchTerm}
             searchInput={searchInput}
@@ -162,22 +195,25 @@ export const HomeFrom = () => {
             <Button type="button" onClick={handleAddClick} id="adduserbutton">
               Add User
             </Button>
+            </div>
           </div>
+           )}
         </div>
 
-        {selectedDepartment && (
+        {selectedDepartment === "Administrative" ? (
           <UserTable
             data={data}
             handleSortAscending={handleSortAscending}
             deleteUser={deleteUser}
             handleShow={handleShow}
             setid={setid}
-            setemail={setemail}
-            setname={setname}
-            setpassword={setpassword}
-            setYourImageFile={setYourImageFile}
             selectedDepartment={selectedDepartment}
+            setRefresh={setRefresh}
+            userDetails={userDetails}
+            setUserDetails={setUserDetails}
           />
+        ) : (
+          <div> fghbnj </div>
         )}
         <center></center>
       </div>
@@ -187,14 +223,10 @@ export const HomeFrom = () => {
         handleClose={handleClose}
         updateUser={updateUser}
         id={id}
-        email={email}
-        name={name}
-        password={password}
-        setemail={setemail}
-        setname={setname}
-        setpassword={setpassword}
-        setYourImageFile={setYourImageFile}
         showPassword={showPassword}
+        userDetails={userDetails}
+        setUserDetails={setUserDetails}
+        handleChange={handleChange}
       />
 
       <DeleteConfirmationModal

@@ -1,0 +1,19 @@
+
+  .main-content {
+    background-image: url("./../Img/bg\ 1.jpg");
+    background-size: cover;
+    height: 70vh;
+    padding: 0;
+    width: 90%;
+    margin-left: 100px;
+  
+  }
+
+  .navBar{
+   
+    background-color: whitesmoke;
+    width:90%;
+    margin-left: 100px;
+
+  }
+  

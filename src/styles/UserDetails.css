@@ -1,0 +1,51 @@
+
+.contentBorder {
+  border: 1px solid;
+  background-color: #dfeffc;
+  color: #2e6e9e;
+  text-indent: 20px;
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+  font-weight: bold;
+  text-align: center;
+}
+.table1 {
+  width: 50%;
+  margin: 0%;
+
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.table1 td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  width: 5%; /* Adjust the width as needed */
+}
+
+.table1 .label {
+  font-weight: bold;
+  /* width: 10%;  */
+}
+
+.contentBorder {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.displayUser {
+  display: flex;
+  justify-content: left;
+}
+
+.profilePic {
+  width: 150px;
+  height: 150px;
+  margin-left: 250px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0px;
+  padding-top: 0px;
+}
