@@ -1,31 +1,29 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { HomeFrom } from "./pages/HomeForm";
 import LoginForm from "./pages/LoginForm";
-import UploadingFile from './pages/UploadingFile';
-import RegistrationForm from './componet/RegistrationForm';
-import UserHome from './pages/UserHome';
+import UploadingFile from "./pages/UploadingFile";
+import RegistrationForm from "./componet/RegistrationForm";
+import UserHome from "./pages/UserHome";
+import UserDetails from "./componet/UserComponent/UserDetails";
 // import ReduxForm from './pages/ReduxForm';
 function App() {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LoginForm/>}></Route>
-          <Route path="/Home" element={<HomeFrom/>}>
-          </Route>
-          <Route path='/uploadFile' element={<UploadingFile/>} ></Route>
-          <Route path='/Registration' element={<RegistrationForm/>} ></Route>
-          <Route path='/userHome' element={<UserHome/>}></Route>
+          <Route path="/" element={<LoginForm />}></Route>
+          <Route path="/Home" element={<HomeFrom />}></Route>
+          <Route path="/upload" element={<UploadingFile></UploadingFile>} />
+          <Route path="/Registration" element={<RegistrationForm />}></Route>
+          <Route path="/userHome" element={<UserHome />}></Route>
+          <Route  path="/userProfile" element={<UserDetails></UserDetails>}></Route>
         </Routes>
       </BrowserRouter>
       <ToastContainer />
 
-       {/* <ReduxForm/>  */}
-
-      
-      
+      {/* <ReduxForm/>  */}
     </div>
   );
 }

@@ -32,11 +32,7 @@ function LoginForm() {
         localStorage.setItem("userEmail", email);
         dispatch(setUserDetails(userDetails));
 
-        if (userDetails.role === "admin") {
-          nav("/Home");
-        } else {
-          nav("/Home");
-        }
+        nav("/Home");
       })
       .catch((error) => {
         console.log(error);
@@ -46,13 +42,10 @@ function LoginForm() {
   };
 
   const handleRegistrationSuccess = () => {
-    // Logic to handle registration success if needed
+   
     setRegistrationMode(false); // Switch back to login mode after registration
   };
 
-  const handleToggleMode = () => {
-    setRegistrationMode(!isRegistrationMode);
-  };
 
   return (
     <div>

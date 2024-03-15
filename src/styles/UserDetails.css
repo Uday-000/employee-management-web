@@ -10,7 +10,7 @@
   text-align: center;
 }
 .table1 {
-  width: 50%;
+ 
   margin: 0%;
 
   border-collapse: collapse;
@@ -35,8 +35,12 @@
 }
 
 .displayUser {
-  display: flex;
-  justify-content: left;
+
+  background-image: url("./../Img/bg\ 1.jpg");
+  background-size: cover;
+  margin-top: 20px; 
+  margin-left:4%;
+  margin-right:4%; 
 }
 
 .profilePic {

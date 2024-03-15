@@ -1,6 +1,17 @@
-.container {
-  margin-top: 20px;
+.home-container {
+  margin-top: 20px; 
+  /* width: 80%;*/
+  margin-left:4%;
+  margin-right:4%; 
+ 
 }
+
+/* .bodymain{
+  padding: 40px; 
+  background-image: url("./../Img/bg\ 1.jpg");
+  background-size: cover;
+
+} */
 
 .text {
   text-align: center;
@@ -54,7 +65,8 @@ tbody tr:hover {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: 20px 0;
+  /* margin: 20px 0; */
+  /* margin-bottom: -2vh; */
 }
 
 .department-button {
@@ -71,11 +83,6 @@ tbody tr:hover {
   background-color: #2980b9;
 }
 
-.mainBody {
-  padding: 40px;
-  background-image: url("./../Img/bg\ 1.jpg");
-  background-size: cover;
-}
 
 .buttonStyle {
   background-color: #bdd1ec, color #1486ec;
@@ -117,3 +124,22 @@ tbody tr:hover {
   border: none;
   cursor: pointer;
 }
+
+
+.profilepic{
+  flex: 1;
+  margin-right: 2px;
+  
+}
+
+.image{
+  border-radius: 50%;
+  width: 60px;
+}
+
+.mainBody{
+  padding: 40px; 
+  background-image: url("./../Img/bg\ 1.jpg");
+  background-size: cover;
+}
+

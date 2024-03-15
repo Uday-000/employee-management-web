@@ -8,7 +8,12 @@ import UpdateUserModal from "../componet/UpdateUserModal";
 import DeleteConfirmationModal from "../componet/DeleteConfirmationModal";
 import DepartmentButtons from "../componet/DepartmentButtons";
 import UserTable from "../componet/UserTable";
-import { IoIosLogOut } from "react-icons/io";
+
+import TicketDetails from "../componet/TicketComponent/TicketDetails";
+
+import Header from "./Header";
+import { useSelector } from "react-redux";
+
 export const HomeFrom = () => {
   const [data, setData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -19,9 +24,10 @@ export const HomeFrom = () => {
   const [userToDeleteId, setUserToDeleteId] = useState(null);
   const [departmentNames, setDepartmentNames] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState("");
-  // const [yourImageFile, setYourImageFile] = useState(null);
   const [searchInput, setSearchInput] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const userDetails1 = useSelector((state) => state.user.userDetails);
 
   const [userDetails, setUserDetails] = useState({
     userName: "",
@@ -30,7 +36,6 @@ export const HomeFrom = () => {
     address: "",
     phoneNumber: "",
   });
-
   const nav = useNavigate();
 
   const handleClose = () => {
@@ -52,22 +57,10 @@ export const HomeFrom = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/departments")
+      .get(`http://localhost:8080/findUsers?serachTerm=${searchTerm}`)
       .then((response) => {
-        setDepartmentNames(response.data);
-
-        axios
-          .get(`http://localhost:8080/findUsers?serachTerm=${searchTerm}`)
-          .then((response) => {
-            setData(response.data);
-            setRefresh(true);
-          })
-          .catch((error) => {
-            if (error.response.data.errorcode === 700) {
-              alert(error.response.data.message);
-              console.log(error);
-            }
-          });
+        setData(response.data);
+        setRefresh(true);
       })
       .catch((error) => {
         if (error.response.data.errorcode === 700) {
@@ -75,12 +68,34 @@ export const HomeFrom = () => {
           console.log(error);
         }
       });
-  }, [selectedDepartment, refresh, searchTerm]);
+  }, [refresh, searchTerm]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/departments")
+      .then((response) => {
+        setDepartmentNames(response.data);
+      })
+      .catch((error) => {
+        if (error.response.data.errorcode === 700) {
+          alert(error.response.data.message);
+          console.log(error);
+        }
+      });
+  }, [selectedDepartment]);
 
   const deleteUser = (userId) => {
     setUserToDeleteId(userId);
     setShowDeleteConfirmation(true);
   };
+
+  useEffect(() => {
+    if (userDetails1.role === "admin") {
+      setSelectedDepartment("Administrative");
+    } else if (userDetails1.role === "user") {
+      setSelectedDepartment(userDetails1.departmentDto.departmentName);
+    }
+  }, [userDetails1]);
 
   const handleDeleteConfirmation = () => {
     axios
@@ -120,7 +135,7 @@ export const HomeFrom = () => {
   const handleSortAscending = (sortOrder, sortBy) => {
     axios
       .get(
-        `http://localhost:8080/sortUsers?sortOrder=${sortOrder}&departmentName=${selectedDepartment}&sortBy=${sortBy}`
+        `http://localhost:8080/sortUsers?sortOrder=${sortOrder}&sortBy=${sortBy}`
       )
       .then((response) => {
         setData(response.data);
@@ -136,7 +151,7 @@ export const HomeFrom = () => {
     setSearchInput("");
   };
   const handleButtonClick = () => {
-    nav("/uploadFile");
+    nav("/upload");
   };
 
   const handleAddClick = () => {
@@ -150,90 +165,84 @@ export const HomeFrom = () => {
       [name]: value,
     });
   };
-  const handleLogout = () => {
-    localStorage.clear();
-    nav("/");
-  };
 
   return (
-    <div className="container">
-      <div>
-        <p
-          style={{
-            fontSize: "30px",
-            marginTop: "20px",
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "end",
-            marginLeft: "95%",
-          }}
-        >
-          <IoIosLogOut onClick={handleLogout} />
-        </p>
-      </div>
-      <DepartmentButtons
-        departmentNames={departmentNames}
-        handleDepartmentClick={handleDepartmentClick}
-      />
-      
+    <>
+      <Header />
 
-      
-      <div className="mainBody">
-        <div style={{ marginRight: "-38%" }}>
-          {selectedDepartment==="Administrative" && (
-          <div>
-          <SearchBar
-            setSearchTerm={setSearchTerm}
-            searchInput={searchInput}
-            setSearchInput={setSearchInput}
+      <div className="home-container">
+        <div className="bodymain">
+          <DepartmentButtons
+            departmentNames={departmentNames}
+            handleDepartmentClick={handleDepartmentClick}
+             selectedDepartment={selectedDepartment}
+            setSelectedDepartment={setSelectedDepartment}
           />
-          <div>
-            <Button onClick={handleButtonClick} id="adduserbutton1">
-              Upload Document
-            </Button>
 
-            <Button type="button" onClick={handleAddClick} id="adduserbutton">
-              Add User
-            </Button>
+          <div className="mainBody">
+            <div style={{ marginRight: "-38%" }}>
+              {selectedDepartment === "Administrative" && (
+                <div>
+                  <SearchBar
+                    setSearchTerm={setSearchTerm}
+                    searchInput={searchInput}
+                    setSearchInput={setSearchInput}
+                  />
+                  <div>
+                    <Button onClick={handleButtonClick} id="adduserbutton1">
+                      Upload Users
+                    </Button>
+
+                    <Button
+                      type="button"
+                      onClick={handleAddClick}
+                      id="adduserbutton"
+                    >
+                      Add User
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
-           )}
-        </div>
 
-        {selectedDepartment === "Administrative" ? (
-          <UserTable
-            data={data}
-            handleSortAscending={handleSortAscending}
-            deleteUser={deleteUser}
-            handleShow={handleShow}
-            setid={setid}
-            selectedDepartment={selectedDepartment}
-            setRefresh={setRefresh}
+            {selectedDepartment === "Administrative" ? (
+              <UserTable
+                data={data}
+                handleSortAscending={handleSortAscending}
+                deleteUser={deleteUser}
+                handleShow={handleShow}
+                setid={setid}
+                selectedDepartment={selectedDepartment}
+                setRefresh={setRefresh}
+                userDetails={userDetails}
+                setUserDetails={setUserDetails}
+              />
+            ) : (
+              <div>
+                <TicketDetails selectedDepartment={selectedDepartment} />
+              </div>
+            )}
+            <center></center>
+          </div>
+
+          <UpdateUserModal
+            showUpdateModal={showUpdateModal}
+            handleClose={handleClose}
+            updateUser={updateUser}
+            id={id}
+            showPassword={showPassword}
             userDetails={userDetails}
             setUserDetails={setUserDetails}
+            handleChange={handleChange}
           />
-        ) : (
-          <div> fghbnj </div>
-        )}
-        <center></center>
+
+          <DeleteConfirmationModal
+            showDeleteConfirmation={showDeleteConfirmation}
+            handleClose={handleClose}
+            handleDeleteConfirmation={handleDeleteConfirmation}
+          />
+        </div>
       </div>
-
-      <UpdateUserModal
-        showUpdateModal={showUpdateModal}
-        handleClose={handleClose}
-        updateUser={updateUser}
-        id={id}
-        showPassword={showPassword}
-        userDetails={userDetails}
-        setUserDetails={setUserDetails}
-        handleChange={handleChange}
-      />
-
-      <DeleteConfirmationModal
-        showDeleteConfirmation={showDeleteConfirmation}
-        handleClose={handleClose}
-        handleDeleteConfirmation={handleDeleteConfirmation}
-      />
-    </div>
+    </>
   );
 };
