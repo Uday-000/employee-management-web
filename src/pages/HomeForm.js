@@ -59,6 +59,20 @@ export const HomeFrom = () => {
   };
 
   useEffect(() => {
+    axios
+      .get("http://localhost:8080/departments")
+      .then((response) => {
+        setDepartmentNames(response.data);
+      })
+      .catch((error) => {
+        if (error.response.data.errorcode === 700) {
+          alert(error.response.data.message);
+          console.log(error);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
     if(userDetails1.role==="admin"){
     axios
       .get(`http://localhost:8080/findUsers?serachTerm=${searchTerm}`)
@@ -75,19 +89,7 @@ export const HomeFrom = () => {
     }
   }, [refresh, searchTerm,userDetails1]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/departments")
-      .then((response) => {
-        setDepartmentNames(response.data);
-      })
-      .catch((error) => {
-        if (error.response.data.errorcode === 700) {
-          alert(error.response.data.message);
-          console.log(error);
-        }
-      });
-  }, [selectedDepartment]);
+  
 
   const deleteUser = (userId) => {
     setUserToDeleteId(userId);
@@ -231,6 +233,9 @@ export const HomeFrom = () => {
                   searchInput={searchInput}
                   setSearchInput={setSearchInput}
                   searchTerm={searchTerm}
+                  setRefresh={setRefresh}
+                  refresh={refresh}
+                 
                 />
               </div>
             )}

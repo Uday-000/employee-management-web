@@ -41,17 +41,13 @@ function LoginForm() {
       });
   };
 
-  const handleRegistrationSuccess = () => {
-   
-    setRegistrationMode(false); // Switch back to login mode after registration
-  };
 
 
   return (
     <div>
       <div>
         {isRegistrationMode ? (
-          <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
+          <RegistrationForm setRegistrationMode={setRegistrationMode} />
         ) : (
           <div className="loginBody">
             <Form className="login-box">

@@ -13,12 +13,14 @@ function TicketDetails({
   setSearchInput,
   searchInput,
   searchTerm,
+  setRefresh,
+  refresh,
 }) {
   const userDetails = useSelector((state) => state.user.userDetails);
 
+  // console.log(userDetails)
+
   const [tickets, setTickets] = useState([]);
-  // const [searchInput, setSearchInput] = useState(null);
-  // const [searchTerm, setSearchTerm] = useState("");
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -31,23 +33,23 @@ function TicketDetails({
     setShowModal(false);
     setSelectedTicket(null);
   };
-  
-  console.log(selectedTicket)
+
   const handleFormSubmit = (newTicketDetails) => {
-    console.log(newTicketDetails)
+    console.log(newTicketDetails);
     let url = `http://localhost:8080/updateIncident/${selectedTicket.incidentId}`;
 
-
-    axios.put(url, newTicketDetails).then((res) => {
-      // console.log(res);
-      if (res === 200) {
-        alert("updated successfully");
-      }
-    })
-    .catch((error)=>{
-      // console.log(error)
-      alert("error")
-    })
+    axios
+      .put(url, newTicketDetails)
+      .then((response) => {
+        if (response.status === 200) {
+          alert("updated successfully");
+          setRefresh(true);
+        }
+      })
+      .catch((error) => {
+        // console.log(error)
+        alert("error");
+      });
 
     setShowModal(false);
     setSelectedTicket(null);
@@ -60,39 +62,36 @@ function TicketDetails({
 
   const dispatch = useDispatch();
 
+  const assignedTo = userDetails.userName;
+  console.log(assignedTo)
+  const departmentName=userDetails.departmentDto.departmentName
+  console.log(departmentName)
+
   useEffect(() => {
-    if (userDetails.role === "admin") {
+    if (selectedDepartment.length > 0) {
+      let url;
+      if (userDetails.role === "admin") {
+        url = `http://localhost:8080/getTicketsByAdmin?departmentName=${selectedDepartment}&searchDescription=${searchTerm}`;
+      } else if (userDetails.role === "user") {
+        if (userDetails.departmentDto.departmentName === selectedDepartment && userDetails.userName === assignedTo) {
+         
+          url = `http://localhost:8080/getInicentsByAssignedTo?assignedTo=${assignedTo}&departmentName=${selectedDepartment}&searchTerm=${searchTerm}`;
+        } else {
+          
+          url = `http://localhost:8080/getTicketByUser/${userDetails.userId}?departmentName=${selectedDepartment}&searchDescription=${searchTerm}`;
+        }
+      }
       axios
-        .get(
-          `http://localhost:8080/getTicketsByAdmin?departmentName=${selectedDepartment}&searchDescription=${searchTerm}`
-        )
+        .get(url)
         .then((response) => {
           setTickets(response.data);
           dispatch(setTicketDetails(response.data));
-          // console.log(response.data);
         })
-
         .catch((error) => {
-          // console.log(error);
-          alert("Error fetching tickets for admin", error);
-        });
-    } else if (userDetails.role === "user") {
-      axios
-        .get(
-          `http://localhost:8080/getTicketByUser/${userDetails.userId}?departmentName=${selectedDepartment}&searchDescription=${searchTerm}`
-        )
-        .then((response) => {
-          setTickets(response.data);
-          dispatch(setTicketDetails(response.data));
-          // console.log(response.data);
-          // setSearchTerm("")
-        })
-
-        .catch((error) => {
-          alert("Error fetching tickets for user", error);
+          alert("Error fetching tickets: " + error);
         });
     }
-  }, [selectedDepartment, userDetails, searchTerm, dispatch]);
+  }, [selectedDepartment, userDetails, searchTerm, dispatch, assignedTo]);
 
   const handleSortAscending = (sortOrder, sortBy) => {
     let url;
@@ -149,7 +148,7 @@ function TicketDetails({
                     <button
                       id="upbutton"
                       onClick={() => {
-                        handleSortAscending("asc", "tickedId");
+                        handleSortAscending("asc", "incidentId");
                       }}
                     >
                       ▲
@@ -159,7 +158,7 @@ function TicketDetails({
                     <button
                       id="upbutton"
                       onClick={() => {
-                        handleSortAscending("desc", "tickedId");
+                        handleSortAscending("desc", "incidentId");
                       }}
                     >
                       ▼
@@ -200,9 +199,9 @@ function TicketDetails({
             </th>
 
             <th>Description</th>
-            <th> Created Date </th>
+            <th> updated Date </th>
             <th> Status </th>
-            <th> Comments </th>
+            {/* <th> Comments </th> */}
           </tr>
         </thead>
 
@@ -215,9 +214,9 @@ function TicketDetails({
               <td> {ticket.incidentId}</td>
               <td>{ticket.subject}</td>
               <td>{ticket.description}</td>
-              <td>{ticket.createdDate}</td>
+              <td>{ticket.updatedDate}</td>
               <td>{ticket.status}</td>
-              <td>{ticket.comments}</td>
+              {/* <td>{ticket.comments}</td> */}
             </tr>
           ))}
         </tbody>
@@ -228,6 +227,7 @@ function TicketDetails({
         handleClose={handleModalClose}
         ticket={selectedTicket}
         handleSubmit={handleFormSubmit}
+        selectedDepartment={selectedDepartment}
       />
     </div>
   );
