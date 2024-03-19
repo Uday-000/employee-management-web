@@ -1,4 +1,4 @@
-import React, { } from "react";
+import React from "react";
 import { Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
@@ -9,26 +9,19 @@ const DepartmentButtons = ({
   setSelectedDepartment,
   data,
 }) => {
-
   // const [selectedDepartment, setSelectedDepartment] = useState("");
-  
-  
-  
-  
+
   const handleButtonClick = (departmentName) => {
     setSelectedDepartment(departmentName);
     handleDepartmentClick(departmentName);
   };
-  
 
   const userDetails = useSelector((state) => state.user.userDetails);
 
   const sortedDepartments =
     userDetails.role === "user"
-      ? departmentNames.filter((department)=>department !== "Administrative")
+      ? departmentNames.filter((department) => department !== "Administrative")
       : departmentNames.sort();
-  
-
 
   return (
     <div

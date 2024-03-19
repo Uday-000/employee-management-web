@@ -20,7 +20,11 @@ function Header() {
   return (
     <div>
       <div className="main">
+        
         <Dropdown className="mainheader">
+        <div className="roleHeader" >
+          <h3 style={{textAlign:"center" ,marginRight:"600px" }} >Employee Management </h3>
+        </div>
           <Dropdown.Toggle variant="light" id="" className="">
             <div className="profilepic">
               {userDetails.image ? (

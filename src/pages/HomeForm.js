@@ -28,6 +28,9 @@ export const HomeFrom = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const userDetails1 = useSelector((state) => state.user.userDetails);
+  // const tickets = useSelector((state) => state.ticket.ticketDetails);
+
+ 
 
   const [userDetails, setUserDetails] = useState({
     userName: "",
@@ -56,6 +59,7 @@ export const HomeFrom = () => {
   };
 
   useEffect(() => {
+    if(userDetails1.role==="admin"){
     axios
       .get(`http://localhost:8080/findUsers?serachTerm=${searchTerm}`)
       .then((response) => {
@@ -68,7 +72,8 @@ export const HomeFrom = () => {
           console.log(error);
         }
       });
-  }, [refresh, searchTerm]);
+    }
+  }, [refresh, searchTerm,userDetails1]);
 
   useEffect(() => {
     axios
@@ -175,7 +180,7 @@ export const HomeFrom = () => {
           <DepartmentButtons
             departmentNames={departmentNames}
             handleDepartmentClick={handleDepartmentClick}
-             selectedDepartment={selectedDepartment}
+            selectedDepartment={selectedDepartment}
             setSelectedDepartment={setSelectedDepartment}
           />
 
@@ -187,6 +192,7 @@ export const HomeFrom = () => {
                     setSearchTerm={setSearchTerm}
                     searchInput={searchInput}
                     setSearchInput={setSearchInput}
+                    searchTerm={searchTerm}
                   />
                   <div>
                     <Button onClick={handleButtonClick} id="adduserbutton1">
@@ -219,7 +225,13 @@ export const HomeFrom = () => {
               />
             ) : (
               <div>
-                <TicketDetails selectedDepartment={selectedDepartment} />
+                <TicketDetails
+                  selectedDepartment={selectedDepartment}
+                  setSearchTerm={setSearchTerm}
+                  searchInput={searchInput}
+                  setSearchInput={setSearchInput}
+                  searchTerm={searchTerm}
+                />
               </div>
             )}
             <center></center>
