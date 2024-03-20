@@ -1,5 +1,5 @@
 .custom-modal .modal-dialog {
-    max-width: 70%;
+    max-width: 50%;
     max-height: calc(100vh - 50px); 
     overflow-y: auto;
    
@@ -15,4 +15,7 @@
   .table-scrollable {
     max-height: 200px;
     overflow-y: auto;
+  }
+  .input-box{
+    align-content: center;
   }

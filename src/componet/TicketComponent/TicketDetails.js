@@ -24,6 +24,10 @@ function TicketDetails({
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  const formatDate = (datetime) => {
+    return datetime ? new Date(datetime).toLocaleString() : "";
+  };
+
   const handleTableRowClick = (ticket) => {
     setSelectedTicket(ticket);
     setShowModal(true);
@@ -35,8 +39,8 @@ function TicketDetails({
   };
 
   const handleFormSubmit = (newTicketDetails) => {
-    console.log(newTicketDetails);
-    let url = `http://localhost:8080/updateIncident/${selectedTicket.incidentId}`;
+    // console.log(newTicketDetails);
+    let url = `http://localhost:8080/updateIncident/${selectedTicket.incidentId}?updatedBy=${userDetails.role}`;
 
     axios
       .put(url, newTicketDetails)
@@ -62,10 +66,10 @@ function TicketDetails({
 
   const dispatch = useDispatch();
 
-  const assignedTo = userDetails.userName;
-  console.log(assignedTo)
-  const departmentName=userDetails.departmentDto.departmentName
-  console.log(departmentName)
+  const assignedTo = userDetails.userId;
+  // console.log(assignedTo);
+  // const departmentName = userDetails.departmentDto.departmentName;
+  // console.log(departmentName);
 
   useEffect(() => {
     if (selectedDepartment.length > 0) {
@@ -73,11 +77,12 @@ function TicketDetails({
       if (userDetails.role === "admin") {
         url = `http://localhost:8080/getTicketsByAdmin?departmentName=${selectedDepartment}&searchDescription=${searchTerm}`;
       } else if (userDetails.role === "user") {
-        if (userDetails.departmentDto.departmentName === selectedDepartment && userDetails.userName === assignedTo) {
-         
+        if (
+          userDetails.departmentDto.departmentName === selectedDepartment &&
+          userDetails.userId === assignedTo
+        ) {
           url = `http://localhost:8080/getInicentsByAssignedTo?assignedTo=${assignedTo}&departmentName=${selectedDepartment}&searchTerm=${searchTerm}`;
         } else {
-          
           url = `http://localhost:8080/getTicketByUser/${userDetails.userId}?departmentName=${selectedDepartment}&searchDescription=${searchTerm}`;
         }
       }
@@ -133,7 +138,7 @@ function TicketDetails({
         </Form>
       </div>
       <div className="ticketButton">
-        <Button>craete ticket</Button>
+        <Button>create ticket</Button>
       </div>
       <Table striped bordered>
         <thead>
@@ -141,7 +146,7 @@ function TicketDetails({
             <th>
               <Row lg={12}>
                 <Col lg={9}>
-                  <center>Ticket Id</center>
+                  <center style={{width:"3px"}} >TicketId</center>
                 </Col>
                 <Col lg={3}>
                   <Row>
@@ -201,6 +206,7 @@ function TicketDetails({
             <th>Description</th>
             <th> updated Date </th>
             <th> Status </th>
+            <th>Comment</th>
             {/* <th> Comments </th> */}
           </tr>
         </thead>
@@ -211,12 +217,12 @@ function TicketDetails({
               key={ticket.incidenttId}
               onClick={() => handleTableRowClick(ticket)}
             >
-              <td> {ticket.incidentId}</td>
+              <td>{ticket.incidentId}</td>
               <td>{ticket.subject}</td>
               <td>{ticket.description}</td>
-              <td>{ticket.updatedDate}</td>
+              <td>{formatDate(ticket.updatedDate)}</td>
               <td>{ticket.status}</td>
-              {/* <td>{ticket.comments}</td> */}
+              <td>{ticket.commentsDtos.length > 0 ? ticket.commentsDtos[0].comment : ""}</td>
             </tr>
           ))}
         </tbody>
