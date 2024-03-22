@@ -41,7 +41,7 @@ function UserDetails() {
   };
 
   const updateUser = () => {
-    let url = `http://localhost:8080/updateUesrDetails/${userDetails.userId}`;
+    let url = `http://localhost:8080/employeeManagement/updateUesrDetails/${userDetails.userId}`;
     axios
       .put(url, userDetails1)
       .then((res) => {

@@ -40,7 +40,7 @@ function TicketDetails({
 
   const handleFormSubmit = (newTicketDetails) => {
     // console.log(newTicketDetails);
-    let url = `http://localhost:8080/updateIncident/${selectedTicket.incidentId}?updatedBy=${userDetails.role}`;
+    let url = `http://localhost:8080/employeeManagement/updateIncident/${selectedTicket.incidentId}?updatedBy=${userDetails.role}`;
 
     axios
       .put(url, newTicketDetails)
@@ -75,15 +75,15 @@ function TicketDetails({
     if (selectedDepartment.length > 0) {
       let url;
       if (userDetails.role === "admin") {
-        url = `http://localhost:8080/getTicketsByAdmin?departmentName=${selectedDepartment}&searchDescription=${searchTerm}`;
+        url = `http://localhost:8080/employeeManagement/getTicketsByAdmin?departmentName=${selectedDepartment}&searchDescription=${searchTerm}`;
       } else if (userDetails.role === "user") {
         if (
           userDetails.departmentDto.departmentName === selectedDepartment &&
           userDetails.userId === assignedTo
         ) {
-          url = `http://localhost:8080/getInicentsByAssignedTo?assignedTo=${assignedTo}&departmentName=${selectedDepartment}&searchTerm=${searchTerm}`;
+          url = `http://localhost:8080/employeeManagement/getInicentsByAssignedTo?assignedTo=${assignedTo}&departmentName=${selectedDepartment}&searchTerm=${searchTerm}`;
         } else {
-          url = `http://localhost:8080/getTicketByUser/${userDetails.userId}?departmentName=${selectedDepartment}&searchDescription=${searchTerm}`;
+          url = `http://localhost:8080/employeeManagement/getTicketByUser/${userDetails.userId}?departmentName=${selectedDepartment}&searchDescription=${searchTerm}`;
         }
       }
       axios
@@ -101,9 +101,9 @@ function TicketDetails({
   const handleSortAscending = (sortOrder, sortBy) => {
     let url;
     if (userDetails.role === "admin") {
-      url = `http://localhost:8080/sortTickets?sortOrder=${sortOrder}&sortBy=${sortBy}&departmentName=${selectedDepartment}`;
+      url = `http://localhost:8080/employeeManagement/sortTickets?sortOrder=${sortOrder}&sortBy=${sortBy}&departmentName=${selectedDepartment}`;
     } else if (userDetails.role === "user") {
-      url = `http://localhost:8080/sortTickets?sortOrder=${sortOrder}&sortBy=${sortBy}&userId=${userDetails.userId}&departmentName=${selectedDepartment}`;
+      url = `http://localhost:8080/employeeManagement/sortTickets?sortOrder=${sortOrder}&sortBy=${sortBy}&userId=${userDetails.userId}&departmentName=${selectedDepartment}`;
     }
     axios
       .get(url)
@@ -146,7 +146,7 @@ function TicketDetails({
             <th>
               <Row lg={12}>
                 <Col lg={9}>
-                  <center style={{width:"3px"}} >TicketId</center>
+                  <center style={{ width: "3px" }}>TicketId</center>
                 </Col>
                 <Col lg={3}>
                   <Row>
@@ -222,7 +222,11 @@ function TicketDetails({
               <td>{ticket.description}</td>
               <td>{formatDate(ticket.updatedDate)}</td>
               <td>{ticket.status}</td>
-              <td>{ticket.commentsDtos.length > 0 ? ticket.commentsDtos[0].comment : ""}</td>
+              <td>
+                {ticket.commentsDtos.length > 0
+                  ? ticket.commentsDtos[0].comment
+                  : ""}
+              </td>
             </tr>
           ))}
         </tbody>

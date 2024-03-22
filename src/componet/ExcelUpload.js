@@ -27,7 +27,7 @@ export default class ExcelUpload extends Component {
     formData.append("file", selectedFile);
 
     axios
-      .post("http://localhost:8080/upload", formData) // Adjust the endpoint based on your backend
+      .post("http://localhost:8080/employeeManagement/upload", formData) // Adjust the endpoint based on your backend
       .then((response) => {
         alert("Excel document uploaded successfully");
         // Optionally, you can refresh your data or take any other action.

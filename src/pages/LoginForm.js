@@ -25,7 +25,7 @@ function LoginForm() {
 
     axios
       .post(
-        `http://localhost:8080/userLogin?email=${email}&password=${password}`
+        `http://localhost:8080/employeeManagement/userLogin?email=${email}&password=${password}`
       )
       .then((response) => {
         const userDetails = response.data;

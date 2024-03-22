@@ -32,7 +32,7 @@ function RegistrationForm({setRegistrationMode}) {
 
   const handleRegistrationSubmit = (e) => {
     e.preventDefault();
-    let url = `http://localhost:8080/registerUser/${department}`;
+    let url = `http://localhost:8080/employeeManagement/registerUser/${department}`;
     axios
       .post(url, userDetails)
       .then((response) => {

@@ -54,7 +54,7 @@ function TicketModal({
     if (selectedDepartment) {
       axios
         .get(
-          `http://localhost:8080/getUserByDepartment?departmentName=${selectedDepartment}`
+          `http://localhost:8080/employeeManagement/getUserByDepartment?departmentName=${selectedDepartment}`
         )
         .then((response) => {
           if (response.status === 200) {
@@ -69,7 +69,7 @@ function TicketModal({
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/status`)
+      .get(`http://localhost:8080/employeeManagement/status`)
       .then((response) => {
         setStatusOptions(response.data);
       })

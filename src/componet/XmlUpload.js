@@ -27,7 +27,7 @@ export default class XmlUpload extends Component {
     formData.append("file", selectedFile);
 
     axios
-      .post("http://localhost:8080/uploadxml", formData) // Adjust the endpoint based on your backend
+      .post("http://localhost:8080/employeeManagement/uploadxml", formData) // Adjust the endpoint based on your backend
       .then((response) => {
         alert("XML document uploaded successfully");
         // Optionally, you can refresh your data or take any other action.

@@ -60,7 +60,7 @@ export const HomeFrom = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/departments")
+      .get("http://localhost:8080/employeeManagement/departments")
       .then((response) => {
         setDepartmentNames(response.data);
       })
@@ -75,7 +75,7 @@ export const HomeFrom = () => {
   useEffect(() => {
     if(userDetails1.role==="admin"){
     axios
-      .get(`http://localhost:8080/findUsers?serachTerm=${searchTerm}`)
+      .get(`http://localhost:8080/employeeManagement/findUsers?serachTerm=${searchTerm}`)
       .then((response) => {
         setData(response.data);
         setRefresh(true);
@@ -106,7 +106,7 @@ export const HomeFrom = () => {
 
   const handleDeleteConfirmation = () => {
     axios
-      .delete(`http://localhost:8080/deleteuser/${userToDeleteId}`)
+      .delete(`http://localhost:8080/employeeManagement/deleteuser/${userToDeleteId}`)
       .then((res) => {
         if (res.status === 200) {
           //  alert("deleted successfully");
@@ -120,7 +120,7 @@ export const HomeFrom = () => {
   };
 
   const updateUser = () => {
-    let url = `http://localhost:8080/updateUesrDetails/${id}`;
+    let url = `http://localhost:8080/employeeManagement/updateUesrDetails/${id}`;
     axios
       .put(url, userDetails)
       .then((res) => {
@@ -247,6 +247,7 @@ export const HomeFrom = () => {
             handleClose={handleClose}
             updateUser={updateUser}
             id={id}
+
             showPassword={showPassword}
             userDetails={userDetails}
             setUserDetails={setUserDetails}
