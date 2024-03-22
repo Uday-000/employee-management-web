@@ -6,12 +6,12 @@ import { persistStore, persistReducer } from "redux-persist";
 
 const middleware = [thunk];
 
-const presistConfig = {
+const persistConfig = {
   key: "root",
   storage,
 };
 
-const persistedReducer = persistReducer(presistConfig, RootReducer);
+const persistedReducer = persistReducer(persistConfig, RootReducer);
 const store = createStore(persistedReducer, applyMiddleware(...middleware));
 const persistor = persistStore(store);
 

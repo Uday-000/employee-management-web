@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 // import { registerActions } from "../actions/registerActions";
 import axios from "axios";
 
-function RegistrationForm({onRegistrationSuccess}) {
+function RegistrationForm({setRegistrationMode}) {
   const [department, setDepartment] = useState(null);
   const [userDetails, setUserDetails] = useState({
     userName: "",
@@ -38,12 +38,14 @@ function RegistrationForm({onRegistrationSuccess}) {
       .then((response) => {
         if (response.status === 200) {
           alert("register success");
-         onRegistrationSuccess()
+          // setRegistrationMode(false);
+          
+          nav('/Home')
         }
       })
       .catch((error) => {
         console.log(error)
-        alert(error.response.data.message);
+        
       });
   };
   const handleCancelClick = () => {

@@ -5,10 +5,12 @@ import axios from "axios";
 import UpdateUserModal from "../UpdateUserModal";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserDetails } from "../../actions/userAction";
+import { useNavigate } from "react-router-dom";
+import Header from "../../pages/Header";
+
 
 function UserDetails() {
   const userDetails = useSelector((state) => state.user.userDetails);
-  console.log(userDetails);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [userDetails1, setUserDetails1] = useState({
     userName: "",
@@ -18,6 +20,8 @@ function UserDetails() {
     phoneNumber: "",
   });
   const dispatch = useDispatch();
+ const nav=useNavigate();
+
 
   const handleUpdateClick = () => {
     
@@ -70,17 +74,24 @@ function UserDetails() {
     }));
   };
 
+  const handleCancel = () => {
+    nav("/Home") // Go back to the previous page
+  };
+
   return (
-    <div className="p-5">
-      <h4 style={{ textAlign: "center" }}>User Info</h4>
-      <div className="displayUser">
+
+    <div>
+    <Header/>
+    <div className="displayUser" >
+      <h4 style={{ textAlign: "center" }}>{userDetails.role} Info</h4>
+      <div className="">
         <div>
           <Table
             striped
             bordered
             className="table1 mt-3 details"
-            style={{ width: "800px", marginLeft: "240px" }}
-          >
+            style={{ width: "50%",marginLeft:"25%"}}
+            >
             <tbody>
               <tr>
                 <td className="label">Name:</td>
@@ -109,21 +120,17 @@ function UserDetails() {
             </tbody>
           </Table>
         </div>
-        <div className="profilePic">
-          <img
-            style={{
-              borderRadius: "50%",
-            }}
-            src={`data:image/jpeg;base64,${userDetails.image}`}
-            alt=""
-          />
-        </div>
       </div>
 
       <center>
-        <Button className="mt-3" onClick={handleUpdateClick}>
+        <Button className="mt-3  mb-3  " onClick={handleUpdateClick}>
           Update
         </Button>
+
+        <Button className="mt-3 ms-3 mb-3 " onClick={handleCancel}>
+          Cancel
+        </Button> 
+        
 
         <UpdateUserModal
           showUpdateModal={showUpdateModal}
@@ -133,8 +140,9 @@ function UserDetails() {
           setUserDetails={setUserDetails1}
           setShowUpdateModal={setShowUpdateModal}
           handleChange={handleChange}
-        />
+          />
       </center>
+    </div>
     </div>
   );
 }

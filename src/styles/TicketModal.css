@@ -1,0 +1,21 @@
+.custom-modal .modal-dialog {
+    max-width: 50%;
+    max-height: calc(100vh - 50px); 
+    overflow-y: auto;
+   
+  }
+  .custom-modal .modal-dialog::-webkit-scrollbar {
+    width: 0; 
+  }
+
+  .formField{
+    margin-bottom: 10px;
+  }
+
+  .table-scrollable {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .input-box{
+    align-content: center;
+  }
